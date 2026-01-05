@@ -129,7 +129,7 @@ fpga-4bit-alu/
 │   ├── counter.vhd           # Up/Down counter
 │   ├── seven_seg.vhd         # Display decoder
 │   └── ALU_LSD.vhd           # Top-level integration  
-├── docs/
+├── Final document
 │   ├── block_diagram.png
 │   ├── schematic.png
 │   └── waveforms/            # ModelSim output
