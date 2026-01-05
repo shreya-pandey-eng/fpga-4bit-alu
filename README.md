@@ -116,23 +116,19 @@ Project Structure
 
 ```
 fpga-4bit-alu/
-├── src/
+├── VHDL code
 │   ├── and_gate.vhd          # Bitwise AND
 │   ├── or_gate.vhd           # Bitwise OR
 │   ├── xor_gate.vhd          # Bitwise XOR
 │   ├── inv_gate.vhd          # Bitwise NOT
-│   ├── adder_4bit.vhd        # Adder with overflow
+│   ├── adder.vhd             # Adder with overflow
 │   ├── comparator.vhd        # Magnitude comparator
-│   ├── parity_checker.vhd    # Odd/Even detection
+│   ├── odd_even.vhd          # Odd/Even detection
 │   ├── shift_left.vhd        # Left shift register
 │   ├── shift_right.vhd       # Right shift register
 │   ├── counter.vhd           # Up/Down counter
 │   ├── seven_seg.vhd         # Display decoder
-│   └── alu_top.vhd           # Top-level integration
-├── testbench/
-│   └── alu_tb.vhd            # Simulation testbench
-├── constraints/
-│   └── de1soc_pins.qsf       # Pin assignments
+│   └── ALU_LSD.vhd           # Top-level integration
 ├── simulation/
 │   └── waveforms/            # ModelSim output
 ├── docs/
