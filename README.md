@@ -138,7 +138,6 @@ fpga-4bit-alu/
 ├── docs/
 │   ├── block_diagram.png
 │   ├── schematic.png
-│   └── Final_document.pdf
 └── README.md
 ```
 
