@@ -1,1 +1,37 @@
+and_gate.vhd
 
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity and_gate is
+    port(
+        A,B: in std_logic_vector(3 downto 0); 
+			Y: out std_logic_vector(3 downto 0)
+    );
+end entity and_gate;
+
+architecture code of and_gate is
+begin
+    Y <= A and B;
+end architecture code;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+or_gate.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity or_gate is
+  port(
+		A,B: in std_logic_vector(3 downto 0); 
+		Y: out std_logic_vector(3 downto 0)
+		);
+end or_gate;
+architecture code of or_gate is
+begin
+  Y <= A or B;
+end code;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
