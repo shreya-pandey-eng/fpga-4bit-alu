@@ -128,12 +128,11 @@ fpga-4bit-alu/
 │   ├── shift_right.vhd       # Right shift register
 │   ├── counter.vhd           # Up/Down counter
 │   ├── seven_seg.vhd         # Display decoder
-│   └── ALU_LSD.vhd           # Top-level integration
-├── simulation/
-│   └── waveforms/            # ModelSim output
+│   └── ALU_LSD.vhd           # Top-level integration  
 ├── docs/
 │   ├── block_diagram.png
 │   ├── schematic.png
+│   └── waveforms/            # ModelSim output
 └── README.md
 ```
 
