@@ -35,3 +35,396 @@ begin
 end code;
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+xor_gate.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity xor_gate is
+  port(
+		A,B: in std_logic_vector(3 downto 0); 
+		Y: out std_logic_vector(3 downto 0)
+		);
+end xor_gate;
+
+architecture code of xor_gate is
+begin
+  Y <= A xor B;
+end code;
+
+------------------------------------------------------------------------------------------------------------
+
+
+inv_gate.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity inv_gate is
+  port(
+		A: in std_logic_vector(3 downto 0); 
+		Y: out std_logic_vector(3 downto 0)
+		);
+end inv_gate;
+
+architecture code of inv_gate is
+begin
+  Y <= not A;
+end code;
+
+-----------------------------------------------------------------------------------------------------------
+
+adder.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity adder is
+    port(
+        A, B : in  std_logic_vector(3 downto 0);
+        SUM  : out std_logic_vector(3 downto 0);
+        OVF  : out std_logic
+    );
+end entity adder;
+
+architecture code of adder is
+    signal result : unsigned(4 downto 0);
+begin
+   
+    result <= (unsigned('0' & A) + unsigned('0' & B));------corrected by gemini------
+    SUM <= std_logic_vector(result(3 downto 0));
+    OVF <= result(4);
+end architecture code;
+
+-------------------------------------------------------------------------------------------------------------
+
+odd_even.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity odd_even is
+  port(
+		A: in std_logic_vector(3 downto 0); 
+		isOdd, isEven: out std_logic);
+end odd_even;
+
+architecture code of odd_even is
+begin
+  isOdd <= A(0);
+  isEven <= not A(0);
+end code;
+
+---------------------------------------------------------------------------------------------------------
+
+comparator.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity comparator is
+    port(
+        A, B : in  std_logic_vector(3 downto 0);
+        GT, EQ, LT : out std_logic
+    );
+end entity comparator;
+
+architecture code of comparator is
+    signal A_unsigned : unsigned(3 downto 0);
+    signal B_unsigned : unsigned(3 downto 0);
+begin
+   
+    A_unsigned <= unsigned(A);
+    B_unsigned <= unsigned(B);
+    
+    GT <= '1' when A_unsigned > B_unsigned else '0';
+    
+    EQ <= '1' when A_unsigned = B_unsigned else '0';
+    
+    LT <= '1' when A_unsigned < B_unsigned else '0';
+       
+end architecture code;
+
+-------------------------------------------------------------------------------------------------------------------
+
+counter.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity counter is
+    Port (
+        clk      : in  STD_LOGIC;                    
+        rst      : in  STD_LOGIC;                    
+        load     : in  STD_LOGIC;                    
+        dir      : in  STD_LOGIC;                    
+        en       : in  STD_LOGIC;                    
+        load_val : in  STD_LOGIC_VECTOR(3 downto 0); 
+        Q_out    : out STD_LOGIC_VECTOR(3 downto 0)  
+    );
+end counter;
+
+architecture code of counter is
+    signal count_reg : unsigned(3 downto 0) := (others => '0');
+begin
+
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if rst = '1' then
+                
+                count_reg <= (others => '0');
+            elsif load = '1' then
+                
+                count_reg <= unsigned(load_val);
+            elsif en = '1' then
+               
+                if dir = '0' then
+                    
+                    count_reg <= count_reg + 1;
+                else
+                    count_reg <= count_reg - 1;
+                end if;
+            end if;
+        end if;
+    end process;
+
+    
+    Q_out <= std_logic_vector(count_reg);
+
+end code;
+
+------------------------------------------------------------------------------------------------------------------------
+
+shift_left.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity shift_left is
+    Port (
+        D_in  : in  STD_LOGIC_VECTOR(3 downto 0);
+        Q_out : out STD_LOGIC_VECTOR(3 downto 0)
+    );
+end shift_left;
+
+architecture code of shift_left is
+begin
+    Q_out <= D_in(2 downto 0) & '0';
+end code;
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+shift_right.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity shift_right is
+    Port (
+        D_in  : in  STD_LOGIC_VECTOR(3 downto 0);
+        Q_out : out STD_LOGIC_VECTOR(3 downto 0)
+    );
+end shift_right;
+
+architecture code of shift_right is
+begin
+    Q_out <= '0' & D_in(3 downto 1);
+end code;
+
+------------------------------------------------------------------------------------------------------------------------------
+
+seven_seg_driver.vhd
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity seven_seg_driver is
+  port(
+		bin: in std_logic_vector(3 downto 0); 
+		seg: out std_logic_vector(6 downto 0)
+		);
+end seven_seg_driver;
+
+architecture code of seven_seg_driver is
+begin
+  process(bin)
+  begin
+    case bin is
+      when "0000" => seg <= "0000001"; ---0
+      when "0001" => seg <= "1001111"; ---1
+      when "0010" => seg <= "0010010"; ---2
+      when "0011" => seg <= "0000110"; ---3
+      when "0100" => seg <= "1001100"; ---4
+      when "0101" => seg <= "0100100"; ---5
+      when "0110" => seg <= "0100000"; -- 6
+      when "0111" => seg <= "0001111"; ---7
+      when "1000" => seg <= "0000000"; ---8
+      when "1001" => seg <= "0000100"; ---9
+      when "1010" => seg <= "0001000"; -- A
+      when "1011" => seg <= "1100000"; -- b
+      when "1100" => seg <= "0110001"; ---C
+      when "1101" => seg <= "1000010"; ---d
+      when "1110" => seg <= "0110000"; ---E
+      when "1111" => seg <= "0111000"; -- F
+      when others => seg <= "1111111";
+    end case;
+  end process;
+end code;
+
+-----------------------------------------------------------------------------------------------------------------
+
+top layer:
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity ALU_LSD is
+    Port ( 
+        CLK       : in  STD_LOGIC;
+        RST       : in  STD_LOGIC;          
+        Enable    : in  STD_LOGIC;
+        OpCode    : in  STD_LOGIC_VECTOR (3 downto 0);
+        Input_A   : in  STD_LOGIC_VECTOR (3 downto 0);
+        Input_B   : in  STD_LOGIC_VECTOR (3 downto 0);
+        Seg_Out   : out STD_LOGIC_VECTOR (6 downto 0);
+        Leds_Out  : out STD_LOGIC_VECTOR (3 downto 0)
+    );
+end ALU_LSD;
+
+
+architecture code of ALU_LSD is
+    
+    -- Component Declarations
+    component adder is 
+        port(A, B : in std_logic_vector(3 downto 0);
+             SUM : out std_logic_vector(3 downto 0); 
+             OVF : out std_logic); 
+    end component;
+    
+    component and_gate is 
+        port(A, B: in std_logic_vector(3 downto 0); 
+             Y: out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component or_gate is 
+        port(A, B: in std_logic_vector(3 downto 0); 
+             Y: out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component xor_gate is 
+        port(A, B: in std_logic_vector(3 downto 0); 
+             Y: out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component inv_gate is 
+        port(A : in std_logic_vector(3 downto 0); 
+             Y: out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component comparator is 
+        port(A, B : in std_logic_vector(3 downto 0); 
+             GT, EQ, LT : out std_logic); 
+    end component;
+    
+    component odd_even is 
+        port(A: in std_logic_vector(3 downto 0); 
+             isOdd, isEven : out std_logic); 
+    end component;
+    
+    component counter is 
+        port(clk, rst, load, dir, en : in std_logic; 
+             load_val : in std_logic_vector(3 downto 0); 
+             Q_out : out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component shift_left is 
+        port(D_in : in std_logic_vector(3 downto 0); 
+             Q_out: out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component shift_right is 
+        port(D_in : in std_logic_vector(3 downto 0); 
+             Q_out: out std_logic_vector(3 downto 0)); 
+    end component;
+    
+    component seven_seg_driver is 
+        port(bin: in std_logic_vector(3 downto 0); 
+             seg: out std_logic_vector(6 downto 0)); 
+    end component;
+
+-- Signal Declarations-----------------
+ 
+    signal res_sum, res_and, res_or, res_xor, res_inv : std_logic_vector(3 downto 0);
+    signal res_cnt, res_shift, res_shift_r : std_logic_vector(3 downto 0);
+    
+    signal ovf_sig, comp_gt, comp_eq, comp_lt : std_logic;
+    signal is_odd, is_even : std_logic;
+
+    signal final_result : std_logic_vector(3 downto 0);
+    
+    signal clk_divider : unsigned(25 downto 0) := (others => '0');
+    signal slow_clk    : std_logic;
+    
+    signal rst_real    : std_logic;
+
+begin
+
+    rst_real <= NOT RST;
+
+    process(CLK)
+    begin
+        if rising_edge(CLK) then
+            if rst_real = '1' then
+                clk_divider <= (others => '0');
+            else
+                clk_divider <= clk_divider + 1;
+            end if;
+        end if;
+    end process;
+    
+   
+    slow_clk <= clk_divider(25);
+
+    U1_AND: and_gate port map(Input_A, Input_B, res_and);
+    U2_OR: or_gate port map(Input_A, Input_B, res_or);
+    U3_XOR: xor_gate port map(Input_A, Input_B, res_xor);
+    U4_INV: inv_gate port map(Input_A, res_inv);
+    U5_ADDER: adder port map(Input_A, Input_B, res_sum, ovf_sig);
+    U6_COMP: comparator port map(Input_A, Input_B, comp_gt, comp_eq, comp_lt);
+    U7_ODD: odd_even port map(Input_A, is_odd, is_even);
+    U8_CNT: counter port map(slow_clk, rst_real, Input_B(1), Input_B(0), Enable, Input_A, res_cnt);
+    U9_SFTL: shift_left port map(Input_A, res_shift);
+    U10_SFTR: shift_right port map(Input_A, res_shift_r);
+
+    process(OpCode, res_and, res_or, res_xor, res_inv, res_sum, 
+            comp_gt, comp_eq, comp_lt, is_odd, is_even, 
+            res_shift, res_cnt, res_shift_r, ovf_sig) 
+    begin
+        case OpCode is
+            when "0000" => final_result <= res_and;                        
+            when "0001" => final_result <= res_or;                         
+            when "0010" => final_result <= res_xor;                        
+            when "0011" => final_result <= res_inv;                        
+            when "0100" => final_result <= res_sum;                        
+            when "0101" => final_result <= "0" & comp_lt & comp_eq & comp_gt;  
+            when "0110" => final_result <= "000" & is_odd;                
+            when "0111" => final_result <= "000" & is_even;                
+            when "1000" => final_result <= res_shift;                      
+            when "1001" => final_result <= res_shift_r;                   
+            when "1010" => final_result <= res_cnt;                       
+            when others => final_result <= (others => '0');               
+        end case;
+    end process;
+
+    U11_DISP: seven_seg_driver port map(final_result, Seg_Out);
+    Leds_Out <= final_result;
+
+end code;
